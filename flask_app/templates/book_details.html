@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>书籍详情</title>
+    <style>
+        /* 调整blockquote的样式 */
+        blockquote {
+            padding-left: 0;
+            border-left: none;
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ book.cover_url }}" alt="{{ book.title }}" class="img-fluid">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h1 class="card-title">{{ book.title }}</h1>
+                    <p class="card-text"><strong>作者:</strong> {{ book.author }}</p>
+                    <p class="card-text"><strong>出版社:</strong> {{ book.publisher or "未提供" }}</p>
+                    <p class="card-text"><strong>副标题:</strong> {{ book.subtitle or "未提供" }}</p>
+                    <p class="card-text"><strong>译者:</strong> {{ book.translator or "未提供" }}</p>
+                    <p class="card-text"><strong>出版日期:</strong> {{ book.publish_date or "未提供" }}</p>
+                    <p class="card-text"><strong>页数:</strong> {{ book.pages or "未知" }}</p>
+                    <p class="card-text"><strong>价格:</strong> {{ book.price or "未提供" }}</p>
+                    <p class="card-text"><strong>装帧:</strong> {{ book.binding or "未提供" }}</p>
+                    <p class="card-text"><strong>ISBN:</strong> {{ book.isbn or "未提供" }}</p>
+                    <h4 class="mt-4">评论:</h4>
+                    <blockquote class="blockquote mb-4">
+                        <p>{{ book.comment or "暂无评论" }}</p>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4 d-flex justify-content-center">
+        <a href="{{ url_for('index') }}" class="btn btn-primary">返回主页</a>
+    </div>
+</div>
+</body>
+</html>

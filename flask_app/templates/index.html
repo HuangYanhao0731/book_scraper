@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- 搜索框 -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form class="form-inline mb-4" action="{{ url_for('search') }}" method="GET">
+                <input class="form-control mr-2" type="search" name="query" placeholder="搜索书名、作者..." aria-label="Search" style="width: 70%;">
+                <button class="btn btn-outline-success" type="submit">搜索</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 书籍列表 -->
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>封面</th>
+                            <th><a href="?sort=title">书名</a></th> <!-- 可点击标题进行排序 -->
+                            <th><a href="?sort=author">作者</a></th>
+                            <th><a href="?sort=rating">评分</a></th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in books %}
+                        <tr>
+                            <td><img src="{{ book.cover_url }}" alt="{{ book.title }}" style="width: 50px;"></td>
+                            <td>{{ book.title }}</td>
+                            <td>{{ book.author }}</td>
+                            <td>{{ book.rating }}</td>
+                            <td>
+                                <a href="{{ url_for('book_details', book_id=book.id) }}" class="btn btn-info btn-sm">查看详细</a>
+                                <a href="#" class="btn btn-primary btn-sm">编辑</a>
+                                <a href="#" class="btn btn-danger btn-sm">删除</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分页控制 -->
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="pagination justify-content-center">
+                {% if prev_page %}
+                <a class="btn btn-primary" href="?page={{ prev_page }}">上一页</a>
+                {% endif %}
+                {% if next_page %}
+                <a class="btn btn-primary" href="?page={{ next_page }}">下一页</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
