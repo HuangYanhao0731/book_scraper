@@ -1,16 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>书籍详情</title>
     <style>
+        body {
+            background-color: #f4f4f4;
+        }
         /* 调整blockquote的样式 */
         blockquote {
-            padding-left: 0;
-            border-left: none;
+            padding-left: 1rem;
+            border-left: 3px solid #007bff; /* 使用了Bootstrap的primary色 */
             font-style: normal;
+        }
+        .img-fluid {
+            padding: 15px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* 为评价标签增加一些额外的样式 */
+        .evaluation {
+            margin-top: 10px;
+            font-size: 1rem;
+            padding: 0.5em 1em;
+        }
+        /* 情感分析分数的样式 */
+        .sentiment-score {
+            font-weight: bold;
+            margin-left: 10px;
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .Positive {
+            background-color: #4CAF50; /* 绿色背景表示积极情感 */
+            color: white;
+        }
+        .Neutral {
+            background-color: #f1c40f; /* 黄色背景表示中性情感 */
+            color: black;
+        }
+        .Negative {
+            background-color: #e74c3c; /* 红色背景表示消极情感 */
+            color: white;
         }
     </style>
 </head>
@@ -18,12 +51,20 @@
 <div class="container mt-5">
     <div class="card">
         <div class="row g-0">
-            <div class="col-md-4">
+            <div class="col-md-4 d-flex align-items-center justify-content-center">
                 <img src="{{ book.cover_url }}" alt="{{ book.title }}" class="img-fluid">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
                     <h1 class="card-title">{{ book.title }}</h1>
+                     <!-- 增加评价显示 -->
+                    {% if evaluation == "好" %}
+                    <span class="badge bg-success evaluation">好</span>
+                    {% elif evaluation == "中" %}
+                    <span class="badge bg-warning evaluation">中</span>
+                    {% else %}
+                    <span class="badge bg-danger evaluation">差</span>
+                    {% endif %}
                     <p class="card-text"><strong>作者:</strong> {{ book.author }}</p>
                     <p class="card-text"><strong>出版社:</strong> {{ book.publisher or "未提供" }}</p>
                     <p class="card-text"><strong>副标题:</strong> {{ book.subtitle or "未提供" }}</p>
@@ -34,9 +75,23 @@
                     <p class="card-text"><strong>装帧:</strong> {{ book.binding or "未提供" }}</p>
                     <p class="card-text"><strong>ISBN:</strong> {{ book.isbn or "未提供" }}</p>
                     <h4 class="mt-4">评论:</h4>
-                    <blockquote class="blockquote mb-4">
-                        <p>{{ book.comment or "暂无评论" }}</p>
-                    </blockquote>
+{% if comments_with_sentiments and comments_with_sentiments[0][0] != "暂无评论" %}
+<ul class="list-unstyled">
+    {% for data in comments_with_sentiments %}
+    <li class="blockquote mb-3">
+        <p><strong>评论 {{ loop.index }}:</strong> {{ data.comment }}</p>
+        <!-- 显示情感评价 -->
+        <span class="badge {% if data.sentiment == '好' %}bg-success{% elif data.sentiment == '中' %}bg-warning{% else %}bg-danger{% endif %}">{{ data.sentiment }}</span>
+        <!-- 显示情感分析分数 -->
+        <span class="badge {% if data.sentiment_score > 0.65 %}bg-success{% elif data.sentiment_score > 0.35 %}bg-warning{% else %}bg-danger{% endif %} sentiment-score">{{ data.sentiment_score|round(2) }}</span>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<blockquote class="blockquote mb-4">
+    <p>暂无评论</p>
+</blockquote>
+{% endif %}
                 </div>
             </div>
         </div>

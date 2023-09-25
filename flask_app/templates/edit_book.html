@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>编辑图书</h2>
+
+    <form action="{{ url_for('edit_book', book_id=book.id) }}" method="post">
+        <div class="mb-3">
+            <label for="title" class="form-label">书名：</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ book.title }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="author" class="form-label">作者：</label>
+            <input type="text" class="form-control" id="author" name="author" value="{{ book.author }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="rating" class="form-label">评分：</label>
+            <input type="text" class="form-control" id="rating" name="rating" value="{{ book.rating }}">
+        </div>
+        <div class="mb-3">
+            <label for="cover_url" class="form-label">封面URL：</label>
+            <input type="text" class="form-control" id="cover_url" name="cover_url" value="{{ book.cover_url }}">
+        </div>
+        <div class="mb-3">
+            <label for="comment" class="form-label">评论：</label>
+            <textarea class="form-control" id="comment" name="comment" rows="5" placeholder="输入评论">{{ '\n'.join(comments) }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="publisher" class="form-label">出版社：</label>
+            <input type="text" class="form-control" id="publisher" name="publisher" value="{{ book.publisher }}">
+        </div>
+        <div class="mb-3">
+            <label for="subtitle" class="form-label">副标题：</label>
+            <input type="text" class="form-control" id="subtitle" name="subtitle" value="{{ book.subtitle }}">
+        </div>
+        <div class="mb-3">
+            <label for="translator" class="form-label">译者：</label>
+            <input type="text" class="form-control" id="translator" name="translator" value="{{ book.translator }}">
+        </div>
+        <div class="mb-3">
+            <label for="publish_date" class="form-label">出版日期：</label>
+            <input type="text" class="form-control" id="publish_date" name="publish_date" value="{{ book.publish_date }}">
+        </div>
+        <div class="mb-3">
+            <label for="pages" class="form-label">页数：</label>
+            <input type="text" class="form-control" id="pages" name="pages" value="{{ book.pages }}">
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">价格：</label>
+            <input type="text" class="form-control" id="price" name="price" value="{{ book.price }}">
+        </div>
+        <div class="mb-3">
+            <label for="binding" class="form-label">装帧：</label>
+            <input type="text" class="form-control" id="binding" name="binding" value="{{ book.binding }}">
+        </div>
+        <div class="mb-3">
+            <label for="isbn" class="form-label">ISBN：</label>
+            <input type="text" class="form-control" id="isbn" name="isbn" value="{{ book.isbn }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">更新图书</button>
+    </form>
+</div>
+{% endblock %}
